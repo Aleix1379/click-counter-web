@@ -1,0 +1,19 @@
+#number-of-clicks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sign-in-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+app-auth {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+
+}

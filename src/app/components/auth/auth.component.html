@@ -1,0 +1,19 @@
+<div id="auth">
+
+  <fa-icon [icon]="faTimes" (click)="hideAuth()" class="hide-auth"></fa-icon>
+
+  <div id="auth-tabs-container">
+
+    <div class="auth-tabs-header">
+      <div class="auth-tab" [ngClass]="{'tab-active': currentTab == 'login'}" (click)="setTab('login')">Login</div>
+      <div class="auth-tab" [ngClass]="{'tab-active': currentTab == 'register'}" (click)="setTab('register')">Register</div>
+    </div>
+
+    <div class="auth-tabs-content">
+      <app-login *ngIf="currentTab == 'login'" (login)="loginPressed($event)"></app-login>
+      <app-register *ngIf="currentTab == 'register'" (register)="registerPressed($event)"></app-register>
+    </div>
+
+  </div>
+
+</div>

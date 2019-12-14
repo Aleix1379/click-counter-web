@@ -1,0 +1,28 @@
+<form class="login-form">
+  <mat-form-field>
+    <label>
+      <input matInput placeholder="Username" name="username" class="login-input"
+             [(ngModel)]="dataForm.username.value"
+             (input)="input('username')">
+
+      <mat-error *ngIf="showErrorMinLength('username')">
+        Minimum length: <strong>{{dataForm.username.minLength}}</strong>
+      </mat-error>
+    </label>
+  </mat-form-field>
+
+  <mat-form-field>
+    <label>
+      <input matInput placeholder="Password" name="password" type="password" class="login-input"
+             [(ngModel)]="dataForm.password.value"
+             (input)="input('password')">
+
+      <mat-error *ngIf="showErrorMinLength('password')">
+        Minimum length: <strong>{{dataForm.password.minLength}}</strong>
+      </mat-error>
+    </label>
+  </mat-form-field>
+
+  <app-button [label]="'Login'" (pressed)="pressed()"></app-button>
+
+</form>

@@ -1,0 +1,44 @@
+<form class="register-form">
+  <mat-form-field>
+    <label>
+      <input matInput placeholder="Username" name="username" class="register-input"
+             [(ngModel)]="dataForm.username.value"
+             (input)="input('username')">
+
+      <mat-error *ngIf="showErrorMinLength('username')">
+        Minimum length: <strong>{{dataForm.username.minLength}}</strong>
+      </mat-error>
+    </label>
+  </mat-form-field>
+
+  <mat-form-field>
+    <label>
+      <input matInput placeholder="Password" name="password" type="password" class="register-input"
+             [(ngModel)]="dataForm.password.value"
+             (input)="input('password')">
+
+      <mat-error *ngIf="showErrorMinLength('password')">
+        Minimum length: <strong>{{dataForm.password.minLength}}</strong>
+      </mat-error>
+    </label>
+  </mat-form-field>
+
+  <mat-form-field>
+    <label>
+      <input matInput placeholder="Repeat password" name="repeat-password" type="password" class="register-input"
+             [(ngModel)]="dataForm.repeatPassword.value"
+             (input)="input('repeatPassword')">
+
+      <mat-error *ngIf="showErrorPasswordDoNotMatch()">
+        The passwords do not match
+      </mat-error>
+
+      <mat-error *ngIf="showErrorMinLength('repeatPassword')">
+        Minimum length: <strong>{{dataForm.repeatPassword.minLength}}</strong>
+      </mat-error>
+    </label>
+  </mat-form-field>
+
+  <app-button [label]="'Register'" (pressed)="pressed()"></app-button>
+
+</form>

@@ -1,0 +1,16 @@
+<div id="number-of-clicks">
+
+  <ng2-odometer [number]="numberOfClicks" [config]="{}"></ng2-odometer>
+  <app-button *ngIf="showButton" [label]="'Click me!'" (pressed)="onPressed()"></app-button>
+
+  <div *ngIf="!showButton && !showAuthComponent" class="sign-in-container">
+    <p>If you want to increase the counter you have to sign in</p>
+    <app-button [label]="'Authenticate'" (pressed)="showSignIn()"></app-button>
+  </div>
+
+  <app-auth *ngIf="showAuthComponent" (hide)="closeAuth()"
+            (login)="login($event)"
+            (register)="register($event)">
+  </app-auth>
+
+</div>
