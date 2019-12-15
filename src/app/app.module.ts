@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {HomeComponent} from './pages/home/home.component';
 import {ComponentsModule} from './components/components.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import {Ng2OdometerModule} from 'ng2-odometer';
+import {InterceptorModule} from './interceptor.module';
 
 @NgModule({
   declarations: [
@@ -15,9 +15,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   imports: [
     AppRoutingModule,
+    BrowserAnimationsModule,
     BrowserModule,
     ComponentsModule,
-    BrowserAnimationsModule,
+    InterceptorModule,
     // Ng2OdometerModule.forRoot()
   ],
   providers: [],

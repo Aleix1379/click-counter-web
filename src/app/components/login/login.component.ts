@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MatSnackBar} from '@angular/material';
+import {TokensService} from '../../services/tokens/tokens.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,8 @@ export class LoginComponent implements OnInit {
     password: {value: '', minLength: 8, touched: false}
   };
 
-  constructor(private snackBar: MatSnackBar) {
+  constructor(private snackBar: MatSnackBar,
+              private tokensService: TokensService) {
   }
 
   ngOnInit() {
@@ -29,8 +31,22 @@ export class LoginComponent implements OnInit {
       const snackBarRef = this.snackBar.open('There are errors en the form', null, {verticalPosition: 'top'});
       setTimeout(() => snackBarRef.dismiss(), 3000);
     } else {
-      console.warn('do login...');
-      this.login.emit({loginOk: true});
+      this.tokensService.createToken(
+        {
+          username: this.dataForm.username.value,
+          password: this.dataForm.password.value
+        }
+      )
+        .subscribe(
+          data => {
+            this.login.emit({loginOk: true, token: data});
+          },
+          error => {
+            console.log('error login...');
+            console.log(error);
+            this.login.emit({loginOk: false, error});
+          }
+        );
     }
   }
 

@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MatSnackBar} from '@angular/material';
+import {UserService} from '../../services/userService/user-service';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,8 @@ export class RegisterComponent implements OnInit {
     repeatPassword: {value: '', minLength: 8, touched: false}
   };
 
-  constructor(private snackBar: MatSnackBar) {
+  constructor(private snackBar: MatSnackBar,
+              private userService: UserService) {
   }
 
   ngOnInit() {
@@ -32,8 +34,22 @@ export class RegisterComponent implements OnInit {
       const snackBarRef = this.snackBar.open('There are errors en the form', null, {verticalPosition: 'top'});
       setTimeout(() => snackBarRef.dismiss(), 3000);
     } else {
-      console.warn('do register...');
-      this.register.emit({registerOk: true});
+      this.userService.createUser(
+        {
+          username: this.dataForm.username.value,
+          password: this.dataForm.password.value
+        }
+      )
+        .subscribe(
+          data => {
+            this.register.emit({registerOk: true, username: data.username});
+          },
+          error => {
+            console.log('error creating new user...');
+            console.log(error);
+            this.register.emit({registerOk: false, error});
+          }
+        );
     }
   }
 

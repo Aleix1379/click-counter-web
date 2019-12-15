@@ -9,23 +9,25 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import {MatFormFieldModule, MatInputModule, MatSnackBarModule} from '@angular/material';
 import {FormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    NumberOfClicksComponent,
-    ButtonComponent,
     AuthComponent,
+    ButtonComponent,
     LoginComponent,
+    NumberOfClicksComponent,
     RegisterComponent,
   ],
   imports: [
-    Ng2OdometerModule,
     CommonModule,
     FontAwesomeModule,
+    FormsModule,
+    HttpClientModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    Ng2OdometerModule,
   ],
   exports: [
     NumberOfClicksComponent,

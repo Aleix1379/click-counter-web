@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {LocalStorageService} from '../../services/local-storage.service';
+import {LocalStorageService} from '../../services/local-storage/local-storage.service';
+import {CounterService} from '../../services/counter/counter.service';
+import {MatSnackBar} from '@angular/material';
+import {EventsService} from '../../services/events/events.service';
 
 @Component({
   selector: 'app-number-of-clicks',
@@ -10,30 +13,44 @@ export class NumberOfClicksComponent implements OnInit {
   numberOfClicks = 0;
   showButton = false; // only show the button if the userhas signed in
   showAuthComponent = false;
+  username = '';
 
-  constructor(private localStorageService: LocalStorageService) {
+  constructor(private localStorageService: LocalStorageService,
+              private counterService: CounterService,
+              private snackBar: MatSnackBar,
+              private eventsService: EventsService) {
   }
 
   ngOnInit() {
-    console.warn('Get the number of clicks from the backend');
-  }
-
-  onPressed() {
-    console.warn('verify used didn\'t click before 24H');
-
     const token = this.localStorageService.getAuthToken();
-    console.warn('verify if token has expired...');
     if (token) {
       this.showButton = true;
     }
 
-    this.numberOfClicks++;
-    console.warn('update the value with the backend...');
-    console.log('onPressed...');
+    this.counterService.getCounter().subscribe(
+      data => this.numberOfClicks = data.value,
+      error => {
+        const errorMessage = 'Error downloading number of clicks';
+        console.log(errorMessage);
+        console.log(error);
+        this.showSnackBar(errorMessage);
+      }
+    );
+  }
+
+  private showSnackBar(errorMessage: string) {
+    const snackBarRef = this.snackBar.open(errorMessage, null, {verticalPosition: 'top'});
+    setTimeout(() => snackBarRef.dismiss(), 3000);
+  }
+
+  onPressed() {
+    this.counterService.increaseCounter().subscribe(
+      data => this.numberOfClicks = data.value,
+      error => this.showSnackBar(error.error.message)
+    );
   }
 
   showSignIn() {
-    console.log('showSignIn...');
     this.showAuthComponent = true;
   }
 
@@ -45,17 +62,21 @@ export class NumberOfClicksComponent implements OnInit {
     if (data.loginOk) {
       this.showAuthComponent = false;
       this.showButton = true;
+      this.localStorageService.setAuthToken(data.token);
     } else {
-      console.log('error login...');
+      this.showSnackBar('Username or password incorrect');
     }
   }
 
   register(data) {
     if (data.registerOk) {
-      this.showAuthComponent = false;
-      this.showButton = true;
+      this.eventsService.publish('user:registered', data.username);
     } else {
-      console.log('error register');
+      if (data.error.error.errorCode === 11000) {
+        this.showSnackBar('Username already exists');
+      } else {
+        this.showSnackBar('Error registering new user');
+      }
     }
   }
 

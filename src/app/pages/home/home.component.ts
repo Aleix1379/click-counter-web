@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {EventsService} from '../../services/events/events.service';
 
 @Component({
   selector: 'app-home',
@@ -6,10 +7,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  username = '';
 
-  constructor() { }
+  constructor(private eventsService: EventsService) {
+  }
 
   ngOnInit() {
+    this.eventsService.subscribe('user:logined', username => {
+      this.username = username;
+    });
+  }
+
+  getCurrentUsername() {
+    if (this.username) {
+      return this.username;
+    }
   }
 
 }
